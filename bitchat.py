@@ -306,17 +306,17 @@ class BLEChatPeer:
         print(f"\n[*] Scanning for BLE chat peers (timeout: {timeout}s)...")
         devices = await BleakScanner.discover(timeout=timeout)
         
-        # Filter devices that might be chat peers (name starts with "BitChat" or show our service UUID)
+        # Filter devices that are chat peers (name must start with "BitChat")
         chat_peers = []
         for device in devices:
-            if device.name and ("BitChat" in device.name or device.name.startswith("BitChat")):
+            if device.name and device.name.startswith("BitChat"):
                 chat_peers.append(device)
         
         if not chat_peers:
-            print("[*] No chat peers found. Showing all BLE devices:")
-            return devices
+            print("[*] No BitChat peers found. Make sure another device is running the app.")
+            return []
         else:
-            print(f"[*] Found {len(chat_peers)} chat peer(s):")
+            print(f"[*] Found {len(chat_peers)} BitChat peer(s):")
             return chat_peers
 
     async def connect_to_peer(self, address: str) -> bool:
@@ -493,7 +493,7 @@ class BLEChatPeer:
         elif cmd == "/scan":
             devices = await self.scan_for_peers()
             if devices:
-                print("\n[*] Available devices:")
+                print("\n[*] Available BitChat peers:")
                 for i, device in enumerate(devices, 1):
                     name = device.name or "Unknown"
                     print(f"  {i}. {name} ({device.address})")
