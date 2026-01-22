@@ -13,6 +13,7 @@ from bleak import BleakScanner, BleakClient, BleakGATTCharacteristic
 from bleak.backends.device import BLEDevice
 import dbus
 import dbus.exceptions
+import dbus.service
 import dbus.mainloop.glib
 from gi.repository import GLib
 
